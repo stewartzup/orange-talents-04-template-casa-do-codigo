@@ -2,6 +2,7 @@ package br.com.zupacademy.stewart.casadocodigo.novoAutor;
 
 //import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -14,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-
 @RestController
 @RequestMapping("autores")
 public class AutorController {
 
 	@Autowired
 	private AutorRepository autorRepository;
-	
+
 	@GetMapping
 	public List<AutorDto> lista() {
 		List<Autor> autores = autorRepository.findAll();
@@ -29,13 +29,21 @@ public class AutorController {
 	}
 
 	@PostMapping
-	public ResponseEntity<AutorDto> cadastrarAutor(@RequestBody @Valid AutorRequest request, UriComponentsBuilder uriBuilder) {
-		Autor autor = request.converterToModel();
-		Autor autorSalvo = autorRepository.save(autor);
-		return ResponseEntity.ok().build();
-		//URI uri = uriBuilder.path("/autor/{id}").buildAndExpand(autor.getId()).toUri();
-		//return ResponseEntity.created(uri).body(new AutorDto(autor));
-		
+	public ResponseEntity<AutorDto> cadastrarAutor(@RequestBody @Valid AutorRequest request,
+			UriComponentsBuilder uriBuilder) {
+		//verifica se email ja existe
+		Optional<Autor> autorEmail = autorRepository.findByEmail(request.getEmail());
+
+		if (!autorEmail.isPresent()) {
+			Autor autor = request.converterToModel();
+			Autor autorSalvo = autorRepository.save(autor);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.badRequest().build();
+
+		// URI uri =
+		// uriBuilder.path("/autor/{id}").buildAndExpand(autor.getId()).toUri();
+		// return ResponseEntity.created(uri).body(new AutorDto(autor));
 
 	}
 

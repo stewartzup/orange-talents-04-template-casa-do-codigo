@@ -35,4 +35,13 @@ public class AutorRequest {
 		this.dataCriacao = dataCriacao;
 	}
 
+	
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	
+
 }
