@@ -4,8 +4,11 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import br.com.zupacademy.stewart.casadocodigo.compartilhado.UniqueValue;
+
 public class CategoriaRequest {
 	@NotBlank
+	@UniqueValue(domainClass = Categoria.class, fieldName = "nome", message = "o nome deve ser unico")
 	private String nome;
 
 	@JsonCreator

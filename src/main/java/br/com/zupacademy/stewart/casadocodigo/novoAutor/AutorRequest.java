@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import br.com.zupacademy.stewart.casadocodigo.compartilhado.UniqueValue;
+import br.com.zupacademy.stewart.casadocodigo.novacategoria.Categoria;
+
 
 
 public class AutorRequest {
@@ -16,6 +19,7 @@ public class AutorRequest {
 	private String nome;
 	@NotBlank
 	@Email
+	@UniqueValue(domainClass = Autor.class, fieldName = "email", message = "o email deve ser unico")
 	private String email;
 	@NotBlank
 	@Size(max = 400)
